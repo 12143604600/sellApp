@@ -1,6 +1,6 @@
 <template>
-    <div>
-        商家页面
+    <div id="shops">
+        <div class="shop_"></div>
     </div>
 </template>
 

@@ -18,15 +18,19 @@
       <router-link to="/shops">商家</router-link>
     </div>
     <router-view></router-view>
-    <!-- 空盒子层高度 -->
-    <div class="foolter_height"></div>
+
+    <!-- 购物车盒子-->
+    <transition name="slide-fade">
+      <div class="shopping_cart_box" v-show='showCart'>
+      </div>
+    </transition>
     <!-- 底部购物条 -->
-    <div class="shopcart_box">
+    <div class="shopcart_box" @click="showCart = !showCart">
       <div class="leftBox">
         <ul>
           <li>
-            <div>
-              <img src="" alt="">
+            <div >
+              <Icon type="md-cart" size="50"/>
             </div>
           </li>
           <li>
@@ -49,6 +53,7 @@ import { getSeller } from "../api/apis";
 export default {
   data() {
     return {
+      showCart: false,
       seller: {},
       description: ""
     };
@@ -73,6 +78,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+/* 可以设置不同的进入和离开动画 */
+/* 设置持续时间和动画函数 */
+.slide-fade-enter-active {
+  transition: all 0.8s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.8s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateY(100px);
+  opacity: 0;
+}
 //商家头部
 #center {
   display: flex;
@@ -140,14 +158,18 @@ export default {
     line-height: 40px;
     border-bottom: 1px solid #ccc;
   }
-  .foolter_height {
-    height: 80px;
+
+  .shopping_cart_box {
+    width: 100%;
+    height: 150px;
+    background-color: orange;
+    position: fixed;
+    bottom: 80px;
   }
   //购物车
   .shopcart_box {
     width: 100%;
     height: 80px;
-    background-color: #ccc;
     position: fixed;
     bottom: 0;
     display: flex;
@@ -171,10 +193,13 @@ export default {
           justify-content: center;
           align-items: center;
           div {
-            width: 80%;
-            height: 80%;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            line-height: 85px;
             border-radius: 50%;
             background: #2a343c;
+            color: #ccc;
           }
         }
         li:nth-of-type(2) {
