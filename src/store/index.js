@@ -5,13 +5,51 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     //存放所有交互数据
-    state:{
-        goodList:[]
+    state: {
+        goodList: [],
+        total:0
     },
     //改变,它是改变state的唯一方式
-    mutations:{
-        addGoodList(state,list){
+    mutations: {
+        addGoodList(state, list) {
             state.goodList = list
+        },
+        //数量加
+        addNum(state, obj) {
+            for (let item of state.goodList) {
+                for (let value of item.foods) {
+                    if (value.name == obj.name) {
+                        value.num += obj.num
+                    }
+                }
+            }
+        }
+    },
+    getters: {
+        setArr(state) {
+            var newgoods = [];
+            for (let item of state.goodList) {
+                for (let value of item.foods) {
+                    if (value.num != 0) {
+                        newgoods.push(value)
+                    }
+                }
+            }
+            //去重
+            for (var i = 0; i < newgoods.length; i++) {
+                //定义一个变量保存当前的对象
+                var item = newgoods[i]
+                //再次遍历数组
+                //定义一个变量j，j是i的后一位
+                for (var j = i + 1; j < newgoods.length; j++) {
+                    //判断前一项和后一项的名字是否相等，如果相等goodsObj就删除后一个相同的对象
+                    if (item.name == newgoods[j].name) {
+                        newgoods.splice(j, 1)
+                        j--
+                    }
+                }
+            }
+            return newgoods;
         }
     }
 })

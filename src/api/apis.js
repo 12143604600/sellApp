@@ -3,7 +3,7 @@ import axios from 'axios';
 
 //创建一个请求对象
 const req = axios.create({
-    baseURL: 'http://localhost:3000', // 基本路径
+    baseURL: 'http://192.168.124.7:3000', // 基本路径
     timeout:  10000  //ms  请求10秒 超时限制！
 })
 

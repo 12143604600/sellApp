@@ -4,7 +4,7 @@
     <!-- 综合评价 -->
     <div class="comp_asses">
       <div class="comp_asses_left">
-        <p>{{data.score}}</p>
+        <p>{{data.serviceScore}}</p>
         <p>综合评价</p>
         <p>高于周边商家{{data.rankRate}}%</p>
       </div>
@@ -32,8 +32,8 @@
     <div class="evaluate_list">
       <div class="infor_filter">
         <button @click="typebtn(2)">全部(24)</button>
-        <button @click="typebtn(0)">满意(26)</button>
-        <button @click="typebtn(1)">不满意(20)</button>
+        <button @click="typebtn(0)">满意(18)</button>
+        <button @click="typebtn(1)">不满意(6)</button>
       </div>
       <div class="screen">
         只看有内容的评论
@@ -54,8 +54,8 @@
           </div>
           <p>{{item.text}}</p>
           <p class="thumbs_p">
-            <Icon type="md-thumbs-up"  v-show="item.rateType==0"/>
-            <Icon type="md-thumbs-down" v-show="item.rateType==1"/>
+            <Icon type="md-thumbs-up" v-show="item.rateType==0" />
+            <Icon type="md-thumbs-down" v-show="item.rateType==1" />
             <span v-for="(val,index) in item.recommend" :key="index">{{val}}</span>
           </p>
         </div>
@@ -75,7 +75,7 @@ export default {
     return {
       data: {},
       list: [],
-      type: 2,
+      type: 2
     };
   },
   methods: {
@@ -92,8 +92,9 @@ export default {
       });
     },
     //显示全部、满意、不满意点击事件，
-    typebtn(value){
-      this.type = value 
+    typebtn(value) {
+      this.type = value
+      console.log(this.list)
     }
   },
   mounted() {
@@ -207,13 +208,13 @@ export default {
           display: flex;
           justify-content: space-between;
         }
-      .thumbs_p{
-        margin-top: 10px;
-        span{
-          border: 1px solid #ccc;
-          margin-left: 5px;
+        .thumbs_p {
+          margin-top: 10px;
+          span {
+            border: 1px solid #ccc;
+            margin-left: 5px;
+          }
         }
-      }
       }
     }
   }

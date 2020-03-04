@@ -11,7 +11,7 @@
       </ul>
     </div>
     <!-- 商品列表 -->
-    <div class="goods_list_box">
+    <div class="goods_list_box" >
       <ul class="content">
         <div :id="i" v-for="(v,i) in addGoodList" :key="i">
           <h2>{{v.name}}</h2>
@@ -22,13 +22,13 @@
               <p class="description">{{val.description}}</p>
               <p><span>月销售{{val.sellCount}}份</span>&nbsp;<span>好评率{{val.rating}}%</span></p>
               <div class="price">
-                <div class="price_num"><span>￥{{val.price}}</span><span v-show="val.oldPrice">{{val.oldPrice}}</span>
+                <div class="price_num"><span>￥{{(val.price).toFixed(2)}}</span><span v-show="val.oldPrice">{{val.oldPrice}}</span>
                 </div>
                 <div class="numBtn">
-                  <button>
+                  <button v-show="val.num != 0" @click="alterNum(val.name,-1)">
                     <Icon type="md-remove" size="18" /></button>
-                  {{val.num}}
-                  <button>
+                  <span v-show="val.num != 0">{{val.num}}</span>
+                  <button @click="alterNum(val.name,1)">
                     <Icon type="md-add" size="18" /></button>
                 </div>
               </div>
@@ -46,7 +46,7 @@ import BScroll from "better-scroll";
 export default {
   data() {
     return {
-      meunBtni: 0
+      meunBtni: 0,
     };
   },
   methods: {
@@ -54,17 +54,25 @@ export default {
       let data = await getGoods().then(res => res.data.data);
       this.data = data;
     }, */
+    //发请求
     goods() {
       getGoods().then(res => {
         this.$store.commit("addGoodList", res.data.data);
+        // console.log(res.data.data)
       });
     },
+    //左边菜单样式及右连左联动
     nameClick(i) {
       this.meunBtni = i;
       this.rightDiv.scrollToElement(document.getElementById(i), 600); //用实例对象.要调用的函数
-    }
+    },
+    //商品数量加减
+    alterNum(name,num){
+      this.$store.commit('addNum',{name,num})
+    },
   },
   computed: {
+    //左连右、联动
     getDivheight() {
       var arr = [];
       var total = 0;
@@ -79,6 +87,7 @@ export default {
       // 反数组出去
       return arr;
     },
+    //vuex
     addGoodList() {
       return this.$store.state.goodList;
     }
@@ -115,13 +124,12 @@ export default {
     background-color: #fff;
   }
   .goods_meun {
-    height: 100%;
+    height:100%;
     text-align: center;
     overflow: scroll;
     width: 80px;
     background-color: #f3f6f6;
     .meun_btn_box {
-      height: 50px;
       font-size: 12px;
       .meun_btn {
         word-break: break-all;
@@ -135,9 +143,11 @@ export default {
   }
   //商品列表
   .goods_list_box {
+    height:100%;
     flex: 1;
+    overflow: auto;
     background-color: #fff;
-    overflow: scroll;
+    padding-bottom: 80px;
     h2 {
       height: 26px;
       line-height: 26px;
@@ -192,6 +202,10 @@ export default {
               line-height: 17px;
               border: 0;
               background-color: rgb(51, 144, 219);
+              outline-style: none;
+            }
+            span{
+              margin: 0 5px;
             }
           }
         }
